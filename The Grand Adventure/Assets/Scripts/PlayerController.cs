@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,11 +18,15 @@ public class PlayerController : MonoBehaviour
 
     private Animator playerAnimation;
 
+    private Vector3 respawnPoint;
+    [SerializeField] GameObject fallDetector;
+
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
         playerAnimation = GetComponent<Animator>();
+        respawnPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -52,6 +58,16 @@ public class PlayerController : MonoBehaviour
 
         playerAnimation.SetFloat("Speed", Mathf.Abs(player.velocity.x));
         playerAnimation.SetBool("OnGround", isTouchingGround);
+
+        fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "FallDetector")
+        {
+            transform.position = respawnPoint;
+        }
     }
 }
 
