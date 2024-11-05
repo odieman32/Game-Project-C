@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,12 +22,21 @@ public class PlayerController : MonoBehaviour
     private Vector3 respawnPoint;
     [SerializeField] GameObject fallDetector;
 
+    [SerializeField] Text scoreText;
+
+    [SerializeField] HealthBar healthBar;
+
+    AudioSource jumpSound;
+
+
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
         playerAnimation = GetComponent<Animator>();
         respawnPoint = transform.position;
+        scoreText.text = Scoring.totalScore.ToString();
+        jumpSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -54,6 +64,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isTouchingGround)
         {
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+            jumpSound.Play();
         }
 
         playerAnimation.SetFloat("Speed", Mathf.Abs(player.velocity.x));
@@ -67,6 +78,20 @@ public class PlayerController : MonoBehaviour
         if(collision.tag == "FallDetector")
         {
             transform.position = respawnPoint;
+        }
+        else if (collision.tag == "Crystal")
+        {
+            Scoring.totalScore += 1;
+            scoreText.text = Scoring.totalScore.ToString();
+            collision.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.tag == "Spike")
+        {
+            healthBar.Damage(0.002f);
         }
     }
 }
