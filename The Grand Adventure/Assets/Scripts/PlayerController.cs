@@ -26,7 +26,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] HealthBar healthBar;
 
-    AudioSource jumpSound;
+    [SerializeField] AudioClip jumpSound;
+    [SerializeField] AudioClip crystal;
+    private AudioSource audioSource;
 
 
     // Start is called before the first frame update
@@ -36,7 +38,7 @@ public class PlayerController : MonoBehaviour
         playerAnimation = GetComponent<Animator>();
         respawnPoint = transform.position;
         scoreText.text = Scoring.totalScore.ToString();
-        jumpSound = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isTouchingGround)
         {
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
-            jumpSound.Play();
+            GetComponent<AudioSource>().PlayOneShot(jumpSound);
         }
 
         playerAnimation.SetFloat("Speed", Mathf.Abs(player.velocity.x));
@@ -84,6 +86,7 @@ public class PlayerController : MonoBehaviour
             Scoring.totalScore += 1;
             scoreText.text = Scoring.totalScore.ToString();
             collision.gameObject.SetActive(false);
+            GetComponent<AudioSource>().PlayOneShot(crystal);
         }
     }
 
