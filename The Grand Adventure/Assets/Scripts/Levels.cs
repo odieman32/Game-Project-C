@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class Levels : MonoBehaviour
 {
+    //method for level select buttons
     public void OpenLevel(int levelId)
     {
+        //button opens level based on level ID in build settings
         string levelName = "level " + levelId;
         SceneManager.LoadScene(levelName);
     }

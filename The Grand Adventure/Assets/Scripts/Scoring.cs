@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Scoring : MonoBehaviour
 {
-   public static int totalScore;
+   public static int totalScore; //static variable for the score
 }
 
 //https://www.youtube.com/watch?v=5cANSyYP9yE&list=PLGmYIROty-5YPWeXeVnQvR9KbMIrL5cM-&index=22 by Daniel Wood

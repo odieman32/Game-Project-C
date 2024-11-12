@@ -9,6 +9,7 @@ public class LastWin : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //if the hit box collides with the player then the Last win screen comes up and the time stops
         if (collision.tag == "Player")
         {
             lastWin.SetActive(true);
@@ -16,6 +17,7 @@ public class LastWin : MonoBehaviour
         }
     }
 
+    //method for main menu button
     public void MainMenu()
     {
         SceneManager.LoadScene(0);

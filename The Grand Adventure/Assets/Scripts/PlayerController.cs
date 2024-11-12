@@ -44,10 +44,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //checks to see if the palyer is on the ground
         isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
+        //direction is set to the horizontal inputs (A and D)
         direction = Input.GetAxis("Horizontal");
-
+        //if direction is greater than 0 then the player will move with a velocity and will turn in the direction 
         if (direction > 0f)
         {
             player.velocity = new Vector2(direction * speed, player.velocity.y);
@@ -62,25 +63,27 @@ public class PlayerController : MonoBehaviour
         {
             player.velocity = new Vector2(0, player.velocity.y);
         }
-
+        //if the jump button (Space) is pressed and the player in on the ground then the player will jump with set jump speed and the jump sound will play
         if (Input.GetButtonDown("Jump") && isTouchingGround)
         {
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
             GetComponent<AudioSource>().PlayOneShot(jumpSound);
         }
-
+        //Float and Bool for the animations of walking and jumping
         playerAnimation.SetFloat("Speed", Mathf.Abs(player.velocity.x));
         playerAnimation.SetBool("OnGround", isTouchingGround);
-
+        //the fall detector transfroms the position of the player 
         fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //if the player hit the fall detector tag, then they are sent back to the respawn point
         if(collision.tag == "FallDetector")
         {
             transform.position = respawnPoint;
         }
+        //if the player hits a crystal then the score will go up, the crystal will disapear, and the crystal sound will play
         else if (collision.tag == "Crystal")
         {
             Scoring.totalScore += 1;
@@ -92,6 +95,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        //if the player touches the tag Spike then they will take damage
         if(collision.tag == "Spike")
         {
             healthBar.Damage(0.002f);

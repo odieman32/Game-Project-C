@@ -9,6 +9,7 @@ public class WinScreen : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //if player collides with collider, the win screen appears and time stops
         if (collision.tag == "Player")
         {
             winScreen.SetActive(true);
@@ -16,12 +17,14 @@ public class WinScreen : MonoBehaviour
         }
     }
 
+    //method for next level button
     public void NextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         Time.timeScale = 1;
     }
 
+    //method for main menu button
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
